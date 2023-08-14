@@ -36,14 +36,13 @@ suite('Node Debug Adapter', () => {
     });
 
     suite('initialize', () => {
-        test('should return supported features', () => {
-            return dc.initializeRequest().then((response) => {
-                response.body = response.body || {};
-                assert.equal(
-                    response.body.supportsConfigurationDoneRequest,
-                    true,
-                );
-            });
+        test('should return supported features', async () => {
+            const response = await dc.initializeRequest();
+            response.body = response.body || {};
+            assert.strictEqual(
+                response.body.supportsConfigurationDoneRequest,
+                true,
+            );
         });
 
         test("should produce error for invalid 'pathFormat'", (done) => {
@@ -53,14 +52,14 @@ suite('Node Debug Adapter', () => {
                 columnsStartAt1: true,
                 pathFormat: 'url',
             })
-                .then((response) => {
+                .then((_response) => {
                     done(
                         new Error(
                             "does not report error on invalid 'pathFormat' attribute",
                         ),
                     );
                 })
-                .catch((err) => {
+                .catch((_err) => {
                     // error expected
                     done();
                 });
@@ -134,12 +133,12 @@ suite('Node Debug Adapter', () => {
             return Promise.all([
                 dc
                     .waitForEvent('initialized')
-                    .then((event) => {
+                    .then((_event) => {
                         return dc.setExceptionBreakpointsRequest({
                             filters: ['otherExceptions'],
                         });
                     })
-                    .then((response) => {
+                    .then((_response) => {
                         return dc.configurationDoneRequest();
                     }),
 
