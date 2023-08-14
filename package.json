@@ -2,112 +2,54 @@
     "name": "mock-debug",
     "displayName": "Mock Debug",
     "version": "0.52.0",
-    "publisher": "ms-vscode",
+    "private": true,
     "description": "Starter extension for developing debug adapters for VS Code.",
-    "author": {
-        "name": "Microsoft Corporation"
-    },
-    "license": "MIT",
-    "keywords": [
-        "multi-root ready"
-    ],
-    "engines": {
-        "vscode": "^1.66.0"
-    },
-    "icon": "images/mock-debug-icon.png",
     "categories": [
         "Debuggers"
     ],
-    "private": true,
+    "keywords": [
+        "multi-root ready"
+    ],
+    "bugs": {
+        "url": "https://github.com/Microsoft/vscode-mock-debug/issues"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/Microsoft/vscode-mock-debug.git"
     },
-    "bugs": {
-        "url": "https://github.com/Microsoft/vscode-mock-debug/issues"
+    "license": "MIT",
+    "author": {
+        "name": "Microsoft Corporation"
     },
-    "scripts": {
-        "compile": "tsc -p ./",
-        "lint": "eslint src --ext ts",
-        "typecheck": "tsc -p tsconfig.json --noEmit",
-        "esbuild-base": "esbuild ./src/extension.ts --bundle --tsconfig=./tsconfig.json --external:vscode --format=cjs --platform=node --outfile=dist/extension.js",
-        "watch": "npm run -S esbuild-base -- --sourcemap --sources-content=false --watch",
-        "esbuild-web": "esbuild ./src/web-extension.ts --bundle --tsconfig=./tsconfig.json --external:vscode --format=cjs --platform=browser --outfile=dist/web-extension.js",
-        "watch-web": "npm run -S esbuild-web -- --sourcemap --sources-content=false --watch",
-        "build": "npm run -S esbuild-base -- --sourcemap --sources-content=false && npm run -S esbuild-web -- --sourcemap --sources-content=false",
-        "package": "vsce package",
-        "publish": "vsce publish",
-        "publish-pre-release": "vsce publish --pre-release",
-        "vscode:prepublish": "rimraf dist && npm run -S esbuild-base -- --minify && npm run -S esbuild-web -- --minify",
-        "test": "npm run typecheck",
-        "format": "npm run format_inner -- --check .",
-        "format_fix": "npm run format_inner -- --write .",
-        "format_inner": "prettier"
-    },
-    "devDependencies": {
-        "@types/glob": "^7.2.0",
-        "@types/mocha": "^9.1.0",
-        "@types/node": "^14.14.37",
-        "@types/vscode": "^1.66.0",
-        "@typescript-eslint/eslint-plugin": "^5.17.0",
-        "@typescript-eslint/parser": "^5.17.0",
-        "@vscode/debugadapter": "^1.56.0",
-        "@vscode/debugadapter-testsupport": "^1.56.0",
-        "await-notify": "^1.0.1",
-        "base64-js": "^1.5.1",
-        "esbuild": "^0.14.29",
-        "eslint": "^8.12.0",
-        "events": "^3.3.0",
-        "glob": "^7.2.0",
-        "mocha": "^9.2.2",
-        "path-browserify": "^1.0.1",
-        "prettier": "^3.0.1",
-        "rimraf": "^3.0.2",
-        "typescript": "^4.6.3",
-        "url": "^0.11.0",
-        "vsce": "^2.7.0"
-    },
+    "publisher": "ms-vscode",
     "main": "./dist/extension.js",
     "browser": "./dist/web-extension.js",
-    "activationEvents": [
-        "onDebugResolve:mock",
-        "onDebugDynamicConfigurations:mock",
-        "onCommand:extension.mock-debug.getProgramName"
-    ],
-    "workspaceTrust": {
-        "request": "never"
+    "scripts": {
+        "build": "npm run -S esbuild-base -- --sourcemap --sources-content=false && npm run -S esbuild-web -- --sourcemap --sources-content=false",
+        "compile": "tsc -p ./",
+        "esbuild-base": "esbuild ./src/extension.ts --bundle --tsconfig=./tsconfig.json --external:vscode --format=cjs --platform=node --outfile=dist/extension.js",
+        "esbuild-web": "esbuild ./src/web-extension.ts --bundle --tsconfig=./tsconfig.json --external:vscode --format=cjs --platform=browser --outfile=dist/web-extension.js",
+        "format": "npm run format_inner -- --check .",
+        "format_fix": "npm run format_inner -- --write .",
+        "format_inner": "prettier",
+        "lint": "eslint src --ext ts",
+        "package": "vsce package",
+        "packagejson": "sort-package-json --check",
+        "packagejson_fix": "sort-package-json",
+        "publish": "vsce publish",
+        "publish-pre-release": "vsce publish --pre-release",
+        "test": "npm run typecheck",
+        "typecheck": "tsc -p tsconfig.json --noEmit",
+        "vscode:prepublish": "rimraf dist && npm run -S esbuild-base -- --minify && npm run -S esbuild-web -- --minify",
+        "watch": "npm run -S esbuild-base -- --sourcemap --sources-content=false --watch",
+        "watch-web": "npm run -S esbuild-web -- --sourcemap --sources-content=false --watch"
     },
     "contributes": {
-        "menus": {
-            "editor/title/run": [
-                {
-                    "command": "extension.mock-debug.runEditorContents",
-                    "when": "resourceLangId == markdown",
-                    "group": "navigation@1"
-                },
-                {
-                    "command": "extension.mock-debug.debugEditorContents",
-                    "when": "resourceLangId == markdown",
-                    "group": "navigation@2"
-                }
-            ],
-            "commandPalette": [
-                {
-                    "command": "extension.mock-debug.debugEditorContents",
-                    "when": "resourceLangId == markdown"
-                },
-                {
-                    "command": "extension.mock-debug.runEditorContents",
-                    "when": "resourceLangId == markdown"
-                }
-            ],
-            "debug/variables/context": [
-                {
-                    "command": "extension.mock-debug.toggleFormatting",
-                    "when": "debugType == 'mock' && debugProtocolVariableMenuContext == 'simple'"
-                }
-            ]
-        },
+        "breakpoints": [
+            {
+                "language": "markdown"
+            }
+        ],
         "commands": [
             {
                 "command": "extension.mock-debug.debugEditorContents",
@@ -126,11 +68,6 @@
             {
                 "command": "extension.mock-debug.toggleFormatting",
                 "title": "Toggle between decimal and hex formatting"
-            }
-        ],
-        "breakpoints": [
-            {
-                "language": "markdown"
             }
         ],
         "debuggers": [
@@ -242,6 +179,72 @@
                     "AskForProgramName": "extension.mock-debug.getProgramName"
                 }
             }
-        ]
+        ],
+        "menus": {
+            "editor/title/run": [
+                {
+                    "command": "extension.mock-debug.runEditorContents",
+                    "when": "resourceLangId == markdown",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "extension.mock-debug.debugEditorContents",
+                    "when": "resourceLangId == markdown",
+                    "group": "navigation@2"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "extension.mock-debug.debugEditorContents",
+                    "when": "resourceLangId == markdown"
+                },
+                {
+                    "command": "extension.mock-debug.runEditorContents",
+                    "when": "resourceLangId == markdown"
+                }
+            ],
+            "debug/variables/context": [
+                {
+                    "command": "extension.mock-debug.toggleFormatting",
+                    "when": "debugType == 'mock' && debugProtocolVariableMenuContext == 'simple'"
+                }
+            ]
+        }
+    },
+    "activationEvents": [
+        "onDebugResolve:mock",
+        "onDebugDynamicConfigurations:mock",
+        "onCommand:extension.mock-debug.getProgramName"
+    ],
+    "devDependencies": {
+        "@types/glob": "^7.2.0",
+        "@types/mocha": "^9.1.0",
+        "@types/node": "^14.14.37",
+        "@types/vscode": "^1.66.0",
+        "@typescript-eslint/eslint-plugin": "^5.17.0",
+        "@typescript-eslint/parser": "^5.17.0",
+        "@vscode/debugadapter": "^1.56.0",
+        "@vscode/debugadapter-testsupport": "^1.56.0",
+        "await-notify": "^1.0.1",
+        "base64-js": "^1.5.1",
+        "esbuild": "^0.14.29",
+        "eslint": "^8.12.0",
+        "events": "^3.3.0",
+        "glob": "^7.2.0",
+        "mocha": "^9.2.2",
+        "path-browserify": "^1.0.1",
+        "prettier": "^3.0.1",
+        "rimraf": "^3.0.2",
+        "sort-package-json": "^2.5.1",
+        "typescript": "^4.6.3",
+        "url": "^0.11.0",
+        "vsce": "^2.7.0"
+    },
+    "engines": {
+        "vscode": "^1.66.0"
+    },
+    "icon": "images/mock-debug-icon.png",
+    "workspaceTrust": {
+        "request": "never"
     }
 }
